@@ -705,42 +705,83 @@
         </div>
         
         <!-- Offers Screen -->
-        <div id="offers-screen" class="screen">
-            <div class="screen-header">
-                <button class="back-button" onclick="showScreen('home')">←</button>
-                <h1>Offer Zone</h1>
+        <!-- Offers Screen -->
+<div id="offers-screen" class="screen">
+    <div class="screen-header">
+        <button class="back-button" onclick="showScreen('home')">←</button>
+        <h1>Offer Zone</h1>
+    </div>
+    <div class="screen-content">
+        <!-- Trending Offers Category -->
+        <h2 class="menu-title" style="margin-top: 10px; text-align: left; color: #FFC72C;">TRENDING OFFERS</h2>
+        <div class="offer-card" onclick="showScreen('signup', 'HAPPY HOUR')">
+            <h2>Happy Hour Special</h2>
+            <p>Buy 1 Get 1 on all Kingfisher Beers!</p>
+            <p style="font-size: 0.875rem;">Valid from 4 PM to 7 PM, Monday to Thursday</p>
+            <div class="claim">
+                <span>Claim now</span>
+                <span>→</span>
             </div>
-            <div class="screen-content">
-                <div class="offer-card" onclick="showScreen('signup', 'HAPPY HOUR')">
-                    <h2>Happy Hour Special</h2>
-                    <p>Buy 1 Get 1 on all Kingfisher Beers!</p>
-                    <p style="font-size: 0.875rem;">Valid from 4 PM to 7 PM, Monday to Thursday</p>
-                    <div class="claim">
-                        <span>Claim now</span>
-                        <span>→</span>
-                    </div>
-                </div>
-                <div class="offer-card" onclick="showScreen('signup', 'BEER BUCKET')">
-                    <h2>Beer Bucket Deal</h2>
-                    <p>4 Kingfisher Beers for ₹999!</p>
-                    <p style="font-size: 0.875rem;">Valid all day, any day</p>
-                    <div class="claim">
-                        <span>Claim now</span>
-                        <span>→</span>
-                    </div>
-                </div>
-                <div class="offer-card" onclick="showScreen('signup', 'WEEKEND SPECIAL')">
-                    <h2>Weekend Special</h2>
-                    <p>20% off on your total bill!</p>
-                    <p style="font-size: 0.875rem;">Valid on weekends only (Fri-Sun)</p>
-                    <div class="claim">
-                        <span>Claim now</span>
-                        <span>→</span>
-                    </div>
-                </div>
+        </div>
+        <div class="offer-card" onclick="showScreen('signup', 'KF WEEKDAY SPECIAL')">
+            <h2>KF Weekday Special</h2>
+            <p>30% off on KF Premium & Ultra Max!</p>
+            <p style="font-size: 0.875rem;">Valid Monday to Wednesday, all day</p>
+            <div class="claim">
+                <span>Claim now</span>
+                <span>→</span>
+            </div>
+        </div>
+        <div class="offer-card" onclick="showScreen('signup', 'FIRST-TIME USER')">
+            <h2>First-Time User Discount</h2>
+            <p>15% off on your first order!</p>
+            <p style="font-size: 0.875rem;">New users only</p>
+            <div class="claim">
+                <span>Claim now</span>
+                <span>→</span>
             </div>
         </div>
         
+        <!-- Combo Offers Category -->
+        <h2 class="menu-title" style="margin-top: 30px; text-align: left; color: #FFC72C;">COMBO OFFERS</h2>
+        <div class="offer-card" onclick="showScreen('signup', 'BEER BUCKET')">
+            <h2>Beer Bucket Deal</h2>
+            <p>4 Kingfisher Beers for ₹999!</p>
+            <p style="font-size: 0.875rem;">Valid all day, any day</p>
+            <div class="claim">
+                <span>Claim now</span>
+                <span>→</span>
+            </div>
+        </div>
+        <div class="offer-card" onclick="showScreen('signup', 'WEEKEND SPECIAL')">
+            <h2>Weekend Special</h2>
+            <p>20% off on your total bill!</p>
+            <p style="font-size: 0.875rem;">Valid on weekends only (Fri-Sun)</p>
+            <div class="claim">
+                <span>Claim now</span>
+                <span>→</span>
+            </div>
+        </div>
+        <div class="offer-card" onclick="showScreen('signup', 'BITES & BEERS')">
+            <h2>Bites & Beers Combo</h2>
+            <p>2 KF Beers + Chicken 65 for just ₹799!</p>
+            <p style="font-size: 0.875rem;">Perfect combo for two</p>
+            <div class="claim">
+                <span>Claim now</span>
+                <span>→</span>
+            </div>
+        </div>
+        <div class="offer-card" onclick="showScreen('signup', 'PREMIUM COMBO')">
+            <h2>Premium Party Combo</h2>
+            <p>2 KF Premium + 2 Heineken + Paneer Tikka at ₹1499!</p>
+            <p style="font-size: 0.875rem;">Great for groups of 3-4</p>
+            <div class="claim">
+                <span>Claim now</span>
+                <span>→</span>
+            </div>
+        </div>
+    </div>
+</div>
         <!-- Signup Screen -->
         <div id="signup-screen" class="screen">
             <div class="screen-header">
