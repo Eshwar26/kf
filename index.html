@@ -31,8 +31,10 @@
             align-items: center;
             color: white;
         }
-        .header img {
-            height: 50px;
+        .header h1 {
+            color: white;
+            font-size: 24px;
+            text-align: center;
         }
         .alert-box {
             background-color: #FFC72C;
@@ -258,6 +260,10 @@
             font-size: 1.5rem;
             font-weight: bold;
         }
+        .featured {
+            background-color: #FEF9E7;
+            border-left: 3px solid #FFC72C;
+        }
     </style>
 </head>
 <body>
@@ -265,7 +271,8 @@
         <!-- Home Screen -->
         <div id="home-screen" class="screen active">
             <div class="header">
-                <img src="images/kingfisher-logo.png" alt="Kingfisher Logo">
+                <!-- Kingfisher logo removed as requested -->
+                <h1>KINGFISHER</h1>
             </div>
             <div class="content">
                 <div class="alert-box">
@@ -306,9 +313,26 @@
                 <h1>Beers & Beverages</h1>
             </div>
             <div class="screen-content">
+                <!-- Premium Beers Section Added at Top with KF, Heineken, Amstel -->
+                <div class="menu-section">
+                    <h2 class="section-title">PREMIUM BEERS</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item featured">
+                            <span>King Fisher Premium</span>
+                            <span>₹340</span>
+                        </li>
+                        <li class="menu-list-item featured">
+                            <span>Heineken</span>
+                            <span>₹380</span>
+                        </li>
+                        <li class="menu-list-item featured">
+                            <span>Amstel</span>
+                            <span>₹360</span>
+                        </li>
+                    </ul>
+                </div>
                 <div class="menu-section">
                     <h2 class="section-title">MILD BEER</h2>
-<!--                     <img src="images/mild-beer-banner.jpg" alt="Mild Beer" class="section-banner"> -->
                     <ul class="menu-list">
                         <li class="menu-list-item">
                             <span>K.F. Draught (Mug)</span>
@@ -362,7 +386,6 @@
                 </div>
                 <div class="menu-section">
                     <h2 class="section-title">STRONG BEER</h2>
-<!--                     <img src="images/strong-beer-banner.jpg" alt="Strong Beer" class="section-banner"> -->
                     <ul class="menu-list">
                         <li class="menu-list-item">
                             <span>King Fisher</span>
@@ -408,7 +431,6 @@
                 </div>
                 <div class="menu-section">
                     <h2 class="section-title">COLD DRINKS</h2>
-<!--                     <img src="images/cold-drinks-banner.jpg" alt="Cold Drinks" class="section-banner"> -->
                     <ul class="menu-list">
                         <li class="menu-list-item">
                             <span>Coke/Sprite/Fanta</span>
