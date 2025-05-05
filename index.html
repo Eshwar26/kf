@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kingfisher QR Menu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #f8f9fa;
+        }
+        .app-container {
+            max-width: 390px;
+            height: 100vh;
+            margin: 0 auto;
+            background-color: #C11B1F;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            background-color: #C11B1F;
+            padding: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        .header img {
+            height: 50px;
+        }
+        .alert-box {
+            background-color: #FFC72C;
+            padding: 10px;
+            text-align: center;
+            margin: 0 16px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .content {
+            flex: 1;
+            padding: 0 16px 16px;
+            overflow-y: auto;
+        }
+        .beer-banner {
+            background-color: white;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 24px;
+        }
+        .beer-banner img {
+            width: 100%;
+            border-radius: 4px;
+        }
+        .menu-title {
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+        .menu-item {
+            background-color: white;
+            border: 2px solid #FFC72C;
+            border-radius: 8px;
+            padding: 12px;
+            height: 144px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .menu-item.special {
+            background-color: #FFC72C;
+        }
+        .menu-item-icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+            color: #C11B1F;
+        }
+        .menu-item-text {
+            color: #C11B1F;
+            font-weight: 600;
+            text-align: center;
+        }
+        .footer {
+            background-color: #FFC72C;
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-top: auto;
+        }
+        .screen {
+            display: none;
+            height: 100%;
+        }
+        .screen.active {
+            display: block;
+        }
+        .screen-header {
+            background-color: #C11B1F;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+        .back-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            margin-right: 16px;
+            cursor: pointer;
+        }
+        .screen-content {
+            background-color: #C11B1F;
+            padding: 16px;
+            height: calc(100% - 64px);
+            overflow-y: auto;
+        }
+        .menu-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .menu-section:last-child {
+            margin-bottom: 0;
+        }
+        .section-title {
+            color: #006400;
+            font-weight: bold;
+            font-size: 1.125rem;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        .section-banner {
+            width: 100%;
+            height: 64px;
+            background-color: #f8f8f8;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            object-fit: cover;
+        }
+        .menu-list {
+            list-style: none;
+        }
+        .menu-list-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .menu-list-item:last-child {
+            margin-bottom: 0;
+        }
+        .offer-card {
+            background-color: #FFC72C;
+            border: 2px solid white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            cursor: pointer;
+        }
+        .offer-card h2 {
+            color: #C11B1F;
+            font-weight: bold;
+            font-size: 1.125rem;
+            margin-bottom: 8px;
+        }
+        .offer-card p {
+            color: #000;
+            margin-bottom: 8px;
+        }
+        .offer-card .claim {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .offer-card .claim span {
+            color: #C11B1F;
+            font-weight: 500;
+            margin-right: 4px;
+        }
+        .signup-form {
+            padding: 16px;
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #CCC;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .form-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #C11B1F;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .success-message {
+            text-align: center;
+            padding: 16px;
+        }
+        .success-message .check-icon {
+            font-size: 64px;
+            color: green;
+            margin-bottom: 16px;
+        }
+        .success-message h2 {
+            color: #C11B1F;
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+        .offer-code {
+            background-color: #FFC72C;
+            border: 2px dashed #C11B1F;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+            text-align: center;
+        }
+        .offer-code p:first-child {
+            color: #666;
+            font-size: 0.875rem;
+            margin-bottom: 8px;
+        }
+        .offer-code p:last-child {
+            color: #C11B1F;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Home Screen -->
+        <div id="home-screen" class="screen active">
+            <div class="header">
+                <img src="images/kingfisher-logo.png" alt="Kingfisher Logo">
+            </div>
+            <div class="content">
+                <div class="alert-box">
+                    GOOD TIMES ALERT!
+                </div>
+                <div class="beer-banner">
+                    <img src="images/beer-logos.png" alt="Beer Logos">
+                </div>
+                <h2 class="menu-title">EXPLORE OUR MENU AND WIN BIG!</h2>
+                <div class="menu-grid">
+                    <div class="menu-item" onclick="showScreen('food-menu')">
+                        <div class="menu-item-icon">🍽️</div>
+                        <div class="menu-item-text">Food Menu</div>
+                    </div>
+                    <div class="menu-item" onclick="showScreen('alcohol')">
+                        <div class="menu-item-icon">🥃</div>
+                        <div class="menu-item-text">Alcohol</div>
+                    </div>
+                    <div class="menu-item" onclick="showScreen('beers')">
+                        <div class="menu-item-icon">🍺</div>
+                        <div class="menu-item-text">Beers & Beverages</div>
+                    </div>
+                    <div class="menu-item special" onclick="showScreen('offers')">
+                        <div class="menu-item-icon">🎁</div>
+                        <div class="menu-item-text">Offer Zone</div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                Scan QR code at your table for easy ordering
+            </div>
+        </div>
+
+        <!-- Beers Screen -->
+        <div id="beers-screen" class="screen">
+            <div class="screen-header">
+                <button class="back-button" onclick="showScreen('home')">←</button>
+                <h1>Beers & Beverages</h1>
+            </div>
+            <div class="screen-content">
+                <div class="menu-section">
+                    <h2 class="section-title">MILD BEER</h2>
+                    <img src="images/mild-beer-banner.jpg" alt="Mild Beer" class="section-banner">
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <span>K.F. Draught (Mug)</span>
+                            <span>₹125</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>K.F. Draught (Pitcher)</span>
+                            <span>₹550</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Tuborg/King Fisher</span>
+                            <span>₹290</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Budweiser</span>
+                            <span>₹340</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>L.P. Mild</span>
+                            <span>₹250</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Carlsberg/King Fisher Ultra</span>
+                            <span>₹340</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>King Fisher Can</span>
+                            <span>₹180</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Bira White (Pint)</span>
+                            <span>₹250</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Bira White</span>
+                            <span>₹360</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Corona (Pint)</span>
+                            <span>₹290</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Hoegaarden (Pint)</span>
+                            <span>₹290</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Bacardi Breezer</span>
+                            <span>₹250</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">STRONG BEER</h2>
+                    <img src="images/strong-beer-banner.jpg" alt="Strong Beer" class="section-banner">
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <span>King Fisher</span>
+                            <span>₹290</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>King Fisher Can</span>
+                            <span>₹170</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>L/P Strong</span>
+                            <span>₹270</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Budweiser (Magnum)</span>
+                            <span>₹360</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Tuborg</span>
+                            <span>₹290</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>K F Ultra Max</span>
+                            <span>₹340</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Elephant</span>
+                            <span>₹360</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Tuborg Can (500 ml)</span>
+                            <span>₹230</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>KF ULTRAMA (PITCHER)</span>
+                            <span>₹650</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>KF ULTRAMAX (MUG)</span>
+                            <span>₹150</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">COLD DRINKS</h2>
+                    <img src="images/cold-drinks-banner.jpg" alt="Cold Drinks" class="section-banner">
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <span>Coke/Sprite/Fanta</span>
+                            <span>₹100</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Fresh Lime Soda</span>
+                            <span>₹150</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Mineral Water</span>
+                            <span>₹50</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Red Bull</span>
+                            <span>₹220</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Cranberry Juice</span>
+                            <span>₹180</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Iced Tea</span>
+                            <span>₹120</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Food Menu Screen -->
+        <div id="food-menu-screen" class="screen">
+            <div class="screen-header">
+                <button class="back-button" onclick="showScreen('home')">←</button>
+                <h1>Food Menu</h1>
+            </div>
+            <div class="screen-content">
+                <div class="menu-section">
+                    <h2 class="section-title">STARTERS</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <span>Paneer Tikka</span>
+                            <span>₹350</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Chicken 65</span>
+                            <span>₹400</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Masala Papad</span>
+                            <span>₹120</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Gobi Manchurian</span>
+                            <span>₹280</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Chilli Chicken</span>
+                            <span>₹380</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Fish Fingers</span>
+                            <span>₹420</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">MAIN COURSE</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <span>Butter Chicken</span>
+                            <span>₹450</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Paneer Butter Masala</span>
+                            <span>₹380</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Biryani (Veg/Non-Veg)</span>
+                            <span>₹350/₹450</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Dal Makhani</span>
+                            <span>₹320</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Chicken Tikka Masala</span>
+                            <span>₹420</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Fish Curry</span>
+                            <span>₹480</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">BREADS</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <span>Butter Naan</span>
+                            <span>₹80</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Garlic Naan</span>
+                            <span>₹90</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Plain Roti</span>
+                            <span>₹60</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Lachha Paratha</span>
+                            <span>₹90</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">DESSERTS</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <span>Gulab Jamun</span>
+                            <span>₹200</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Rasmalai</span>
+                            <span>₹250</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Ice Cream</span>
+                            <span>₹180</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Chocolate Brownie</span>
+                            <span>₹220</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Alcohol Screen -->
+        <div id="alcohol-screen" class="screen">
+            <div class="screen-header">
+                <button class="back-button" onclick="showScreen('home')">←</button>
+                <h1>Alcohol Menu</h1>
+            </div>
+            <div class="screen-content">
+                <div class="menu-section">
+                    <h2 class="section-title">WHISKY</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <span>Blenders Pride (30ml)</span>
+                            <span>₹250</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Royal Stag (30ml)</span>
+                            <span>₹200</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Johnnie Walker (30ml)</span>
+                            <span>₹400</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Black Dog (30ml)</span>
+                            <span>₹350</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Jack Daniel's (30ml)</span>
+                            <span>₹450</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">VODKA</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <span>Smirnoff (30ml)</span>
+                            <span>₹220</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Magic Moments (30ml)</span>
+                            <span>₹180</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Absolut (30ml)</span>
+                            <span>₹320</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Grey Goose (30ml)</span>
+                            <span>₹450</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">RUM</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <span>Old Monk (30ml)</span>
+                            <span>₹180</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Bacardi (30ml)</span>
+                            <span>₹250</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Captain Morgan (30ml)</span>
+                            <span>₹280</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">BRANDY</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <span>Honeybee (30ml)</span>
+                            <span>₹200</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Mansion House (30ml)</span>
+                            <span>₹220</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">WINE</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <span>Sula (Shiraz) 375 ML</span>
+                            <span>₹685</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Port Wine (Red) 375 ML</span>
+                            <span>₹265</span>
+                        </li>
+                        <li class="menu-list-item">
+                            <span>Samara (Red) 375 ML</span>
+                            <span>₹320</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Offers Screen -->
+        <div id="offers-screen" class="screen">
+            <div class="screen-header">
+                <button class="back-button" onclick="showScreen('home')">←</button>
+                <h1>Offer Zone</h1>
+            </div>
+            <div class="screen-content">
+                <div class="offer-card" onclick="showScreen('signup', 'HAPPY HOUR')">
+                    <h2>Happy Hour Special</h2>
+                    <p>Buy 1 Get 1 on all Kingfisher Beers!</p>
+                    <p style="font-size: 0.875rem;">Valid from 4 PM to 7 PM, Monday to Thursday</p>
+                    <div class="claim">
+                        <span>Claim now</span>
+                        <span>→</span>
+                    </div>
+                </div>
+                <div class="offer-card" onclick="showScreen('signup', 'BEER BUCKET')">
+                    <h2>Beer Bucket Deal</h2>
+                    <p>4 Kingfisher Beers for ₹999!</p>
+                    <p style="font-size: 0.875rem;">Valid all day, any day</p>
+                    <div class="claim">
+                        <span>Claim now</span>
+                        <span>→</span>
+                    </div>
+                </div>
+                <div class="offer-card" onclick="showScreen('signup', 'WEEKEND SPECIAL')">
+                    <h2>Weekend Special</h2>
+                    <p>20% off on your total bill!</p>
+                    <p style="font-size: 0.875rem;">Valid on weekends only (Fri-Sun)</p>
+                    <div class="claim">
+                        <span>Claim now</span>
+                        <span>→</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Signup Screen -->
+        <div id="signup-screen" class="screen">
+            <div class="screen-header">
+                <button class="back-button" onclick="showScreen('offers')">←</button>
+                <h1>Claim Your Offer</h1>
+            </div>
+            <div class="screen-content">
+                <div class="menu-section">
+                    <div id="step1" class="signup-step active">
+                        <h2 class="section-title" style="text-align: center;">Enter Your Phone Number</h2>
+                        <p style="text-align: center; margin-bottom: 16px;">You're about to claim: <span id="selected-offer" style="font-weight: bold;"></span></p>
+                        <div class="signup-form">
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" pattern="[0-9]{10}" placeholder="10 digit number">
+                            </div>
+                            <button class="form-button" onclick="showSignupStep(2)">Send OTP</button>
+                        </div>
+                    </div>
+                    <div id="step2" class="signup-step" style="display: none;">
+                        <h2 class="section-title" style="text-align: center;">Enter OTP</h2>
+                        <p style="text-align: center; margin-bottom: 16px;">We've sent a verification code to your phone</p>
+                        <div class="signup-form">
+                            <div class="form-group">
+                                <label for="otp">OTP</label>
+                                <input type="text" id="otp" pattern="[0-9]{4}" placeholder="4 digit OTP">
+                            </div>
+                            <button class="form-button" onclick="showSignupStep(3)">Verify OTP</button>
+                        </div>
+                    </div>
+                    <div id="step3" class="signup-step" style="display: none;">
+                        <h2 class="section-title" style="text-align: center;">Complete Your Profile</h2>
+                        <div class="signup-form">
+                            <div class="form-group">
+                                <label for="name">Full Name</label>
+                                <input type="text" id="name">
+                            </div>
+                            <div class="form-group">
+                                <label for="age">Age</label>
+                                <input type="number" id="age" min="21">
+                                <p style="font-size: 0.75rem; color: #666; margin-top: 4px;">You must be at least 21 years old</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city">
+                            </div>
+                            <button class="form-button" onclick="showSignupStep(4)">Get My Offer</button>
+                        </div>
+                    </div>
+                    <div id="step4" class="signup-step" style="display: none;">
+                        <div class="success-message">
+                            <div class="check-icon">✓</div>
+                            <h2>Congratulations!</h2>
+                            <p>Your offer has been activated</p>
+                            <div class="offer-code">
+                                <p>Your offer code</p>
+                                <p id="offer-code">KF1234</p>
+                            </div>
+                            <p style="font-size: 0.875rem; color: #666; margin-bottom: 16px;">Show this code to your server to redeem your offer</p>
+                            <button class="form-button" onclick="showScreen('home')">Back to Home</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentOffer = '';
+        
+        function showScreen(screenId, offer) {
+            // Hide all screens
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Show the selected screen
+            if (screenId === 'home') {
+                document.getElementById('home-screen').classList.add('active');
+            } else if (screenId === 'signup') {
+                document.getElementById('signup-screen').classList.add('active');
+                currentOffer = offer;
+                document.getElementById('selected-offer').textContent = offer;
+                
+                // Reset to step 1
+                showSignupStep(1);
+            } else {
+                document.getElementById(screenId + '-screen').classList.add('active');
+            }
+        }
+        
+        function showSignupStep(step) {
+            // Hide all steps
+            const steps = document.querySelectorAll('.signup-step');
+            steps.forEach(s => {
+                s.style.display = 'none';
+            });
+            
+            // Show the selected step
+            document.getElementById('step' + step).style.display = 'block';
+            
+            // For the last step, generate a random offer code
+            if (step === 4) {
+                const randomCode = 'KF' + Math.floor(1000 + Math.random() * 9000);
+                document.getElementById('offer-code').textContent = randomCode;
+            }
+        }
+    </script>
+</body>
+</html>
