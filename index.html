@@ -14,6 +14,40 @@
         body {
             background-color: #f8f9fa;
         }
+        .logo-container {
+        width: 40%;
+        text-align: left;
+        /* Add these new properties */
+        background-color: #C11B1F; /* Match the header background */
+        padding: 5px;
+        border-radius: 8px;
+    }
+    
+    .logo-container img {
+        height: 40px;
+        /* Add these new properties */
+        mix-blend-mode: multiply; /* This helps blend the logo with the background */
+        filter: brightness(1.1) contrast(0.9); /* Subtle adjustments to improve blending */
+    }
+    
+    .beer-banner {
+        background-color: rgba(255, 255, 255, 0.8); /* Make slightly transparent */
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 24px;
+        cursor: pointer;
+    }
+    
+    .beer-banner img {
+        width: 80%;
+        height: 150px;
+        display: block;
+        margin: 0 auto;
+        border-radius: 4px;
+        /* Add these properties for better blending */
+        mix-blend-mode: multiply;
+        filter: brightness(1.1) contrast(0.9);
+    }
         .app-container {
             max-width: 390px;
             height: 100vh;
