@@ -27,14 +27,25 @@
             background-color: #C11B1F;
             padding: 16px;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
             color: white;
         }
-        .header h1 {
-            color: white;
-            font-size: 24px;
-            text-align: center;
+        .logo-container {
+            width: 40%;
+            text-align: left;
+        }
+        .logo-container img {
+            height: 40px;
+        }
+        .location-container {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+        .location-icon {
+            margin-right: 6px;
+            font-size: 18px;
         }
         .alert-box {
             background-color: #FFC72C;
@@ -54,6 +65,7 @@
             border-radius: 8px;
             padding: 12px;
             margin-bottom: 24px;
+            cursor: pointer;
         }
         .beer-banner img {
             width: 80%;
@@ -275,15 +287,20 @@
         <!-- Home Screen -->
         <div id="home-screen" class="screen active">
             <div class="header">
-                
-                <h1>KINGFISHER</h1>
+                <div class="logo-container">
+                    <img src="images/kingfisher-logo.png" alt="Kingfisher Logo">
+                </div>
+                <div class="location-container">
+                    <span class="location-icon">📍</span>
+                    <span>Paradise Restaurant</span>
+                </div>
             </div>
             <div class="content">
                 <div class="alert-box">
                     GOOD TIMES ALERT!
                 </div>
-                <div class="beer-banner">
-                    <img src="images/kingfisher-logo.png" alt="Logo">
+                <div class="beer-banner" onclick="showScreen('offers')">
+                    <img src="images/logo.png" alt="Logo">
                 </div>
                 <h2 class="menu-title">EXPLORE OUR DIGITAL MENU!</h2>
                 <div class="menu-grid">
@@ -476,12 +493,11 @@
                     <h2 class="section-title">STARTERS</h2>
                     <ul class="menu-list">
                         <li class="menu-list-item">
-    <span>Paneer Tikka <small>(goes well with Corona (Pint)</small></span>
-    <span>₹350</span>
-</li>
-
+                            <span>Paneer Tikka <small>(goes well with Corona (Pint)</small></span>
+                            <span>₹350</span>
+                        </li>
                         <li class="menu-list-item">
-                            <span>Chicken 65 <small> (goes well with KF Ultra Max)</small></span>
+                            <span>Chicken 65 <small>(goes well with KF Ultra Max)</small></span>
                             <span>₹400</span>
                         </li>
                         <li class="menu-list-item">
