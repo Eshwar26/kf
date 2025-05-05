@@ -31,6 +31,22 @@
             align-items: center;
             color: white;
         }
+        .screen-content {
+    background-color: #C11B1F;
+    padding: 16px;
+    height: calc(100% - 64px);
+    overflow-y: auto; /* This controls vertical scrolling */
+}
+
+.app-container {
+    max-width: 390px;
+    height: 100vh;
+    margin: 0 auto;
+    background-color: #C11B1F;
+    overflow: hidden; /* This might be preventing scrolling */
+    display: flex;
+    flex-direction: column;
+}
         .logo-container {
             width: 40%;
             text-align: left;
