@@ -32,21 +32,11 @@
             color: white;
         }
         .screen-content {
-    background-color: #C11B1F;
-    padding: 16px;
-    height: calc(100% - 64px);
-    overflow-y: auto; /* This controls vertical scrolling */
-}
-
-.app-container {
-    max-width: 390px;
-    height: 100vh;
-    margin: 0 auto;
-    background-color: #C11B1F;
-    overflow: hidden; /* This might be preventing scrolling */
-    display: flex;
-    flex-direction: column;
-}
+            background-color: #C11B1F;
+            padding: 16px;
+            height: calc(100% - 64px);
+            overflow-y: auto;
+        }
         .logo-container {
             width: 40%;
             text-align: left;
@@ -158,18 +148,12 @@
             margin-right: 16px;
             cursor: pointer;
         }
-        .screen-content {
-            background-color: #C11B1F;
-            padding: 16px;
-            height: calc(100% - 64px);
-            overflow-y: auto;
-        }
         .menu-section {
             background-color: white;
             border-radius: 8px;
             padding: 16px;
             margin-bottom: 16px;
-            width: 100%; /* Ensure all menu sections have full width */
+            width: 100%;
         }
         .menu-section:last-child {
             margin-bottom: 0;
@@ -192,26 +176,23 @@
         }
         .menu-list {
             list-style: none;
-            width: 100%; /* Ensure menu list takes full width */
+            width: 100%;
         }
         .menu-list-item {
             display: flex;
             justify-content: space-between;
             margin-bottom: 12px;
-            width: 100%; /* Make sure each item takes full width */
+            width: 100%;
         }
-        /* Specifically for alcohol menu, make sure items take full width */
         #alcohol-screen .menu-list-item {
             width: 100%;
             display: flex;
             justify-content: space-between;
         }
-        /* Add min-width to the name span to ensure it takes up space */
         .menu-list-item span:first-child {
             flex: 1;
             min-width: 60%;
         }
-        /* Make the price span fixed width */
         .menu-list-item span:last-child {
             text-align: right;
             min-width: 60px;
@@ -315,6 +296,7 @@
             border-left: 3px solid #FFC72C;
         }
     </style>
+
 </head>
 <body>
     <div class="app-container">
