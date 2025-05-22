@@ -269,69 +269,6 @@
             font-weight: 500;
             margin-right: 4px;
         }
-        .signup-form {
-            padding: 16px;
-        }
-        .form-group {
-            margin-bottom: 16px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #CCC;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        .form-button {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background-color: #C11B1F;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .success-message {
-            text-align: center;
-            padding: 16px;
-        }
-        .success-message .check-icon {
-            font-size: 64px;
-            color: green;
-            margin-bottom: 16px;
-        }
-        .success-message h2 {
-            color: #C11B1F;
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 16px;
-        }
-        .offer-code {
-            background-color: #FFC72C;
-            border: 2px dashed #C11B1F;
-            border-radius: 8px;
-            padding: 16px;
-            margin: 16px 0;
-            text-align: center;
-        }
-        .offer-code p:first-child {
-            color: #666;
-            font-size: 0.875rem;
-            margin-bottom: 8px;
-        }
-        .offer-code p:last-child {
-            color: #C11B1F;
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
         .featured {
             background-color: #FEF9E7;
             border-left: 3px solid #FFC72C;
@@ -861,7 +798,7 @@
         </div>
     </div>
 </li>
-<li class="menu-list-item">
+        <li class="menu-list-item">
     <div class="menu-item-info">
         <div class="menu-item-name">Red Bull</div>
     </div>
@@ -1423,136 +1360,45 @@
                 </div>
             </div>
             <div class="screen-content">
-                <!-- Trending Offers Category -->
-                <h2 class="menu-title" style="margin-top: 10px; text-align: left; color: #FFC72C;">TRENDING OFFERS</h2>
-                <div class="offer-card" onclick="showScreen('signup', 'HAPPY HOUR')">
-                    <h2>Happy Hour Special</h2>
-                    <p>Buy 1 Get 1 on all Kingfisher Beers!</p>
-                    <p style="font-size: 0.875rem;">Valid from 4 PM to 7 PM, Monday to Thursday</p>
-                    <div class="claim">
-                        <span>Claim now</span>
-                        <span>→</span>
-                    </div>
-                </div>
-                <div class="offer-card" onclick="showScreen('signup', 'KF WEEKDAY SPECIAL')">
-                    <h2>KF Weekday Special</h2>
-                    <p>30% off on KF Premium & Ultra Max!</p>
-                    <p style="font-size: 0.875rem;">Valid Monday to Wednesday, all day</p>
-                    <div class="claim">
-                        <span>Claim now</span>
-                        <span>→</span>
-                    </div>
-                </div>
-                <div class="offer-card" onclick="showScreen('signup', 'FIRST-TIME USER')">
-                    <h2>First-Time User Discount</h2>
-                    <p>15% off on your first order!</p>
-                    <p style="font-size: 0.875rem;">New users only</p>
-                    <div class="claim">
-                        <span>Claim now</span>
-                        <span>→</span>
-                    </div>
-                </div>
-                
-                <!-- Combo Offers Category -->
-                <h2 class="menu-title" style="margin-top: 30px; text-align: left; color: #FFC72C;">COMBO OFFERS</h2>
-                <div class="offer-card" onclick="showScreen('signup', 'BEER BUCKET')">
-                    <h2>Beer Bucket Deal</h2>
-                    <p>4 Kingfisher Beers for ₹999!</p>
-                    <p style="font-size: 0.875rem;">Valid all day, any day</p>
-                    <div class="claim">
-                        <span>Claim now</span>
-                        <span>→</span>
-                    </div>
-                </div>
-                <div class="offer-card" onclick="showScreen('signup', 'WEEKEND SPECIAL')">
-                    <h2>Weekend Special</h2>
-                    <p>20% off on your total bill!</p>
-                    <p style="font-size: 0.875rem;">Valid on weekends only (Fri-Sun)</p>
-                    <div class="claim">
-                        <span>Claim now</span>
-                        <span>→</span>
-                    </div>
-                </div>
-                <div class="offer-card" onclick="showScreen('signup', 'BITES & BEERS')">
-                    <h2>Bites & Beers Combo</h2>
-                    <p>2 KF Beers + Chicken 65 for just ₹799!</p>
-                    <p style="font-size: 0.875rem;">Perfect combo for two</p>
-                    <div class="claim">
-                        <span>Claim now</span>
-                        <span>→</span>
-                    </div>
-                </div>
-                <div class="offer-card" onclick="showScreen('signup', 'PREMIUM COMBO')">
-                    <h2>Premium Party Combo</h2>
-                    <p>2 KF Premium + 2 Heineken + Paneer Tikka at ₹1499!</p>
-                    <p style="font-size: 0.875rem;">Great for groups of 3-4</p>
-                    <div class="claim">
-                        <span>Claim now</span>
-                        <span>→</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Signup Screen -->
-        <div id="signup-screen" class="screen">
-            <div class="screen-header">
-                <button class="back-button" onclick="showScreen('offers')">←</button>
-                <h1>Claim Your Offer</h1>
-            </div>
-            <div class="screen-content">
-                <div class="menu-section">
-                    <div id="step1" class="signup-step active">
-                        <h2 class="section-title" style="text-align: center;">Enter Your Phone Number</h2>
-                        <p style="text-align: center; margin-bottom: 16px;">You're about to claim: <span id="selected-offer" style="font-weight: bold;"></span></p>
-                        <div class="signup-form">
-                            <div class="form-group">
-                                <label for="phone">Phone Number</label>
-                                <input type="tel" id="phone" pattern="[0-9]{10}" placeholder="10 digit number">
-                            </div>
-                            <button class="form-button" onclick="showSignupStep(2)">Send OTP</button>
+                <!-- Offers List View -->
+                <div id="offers-list">
+                    <h2 class="menu-title" style="margin-top: 10px; text-align: left; color: #FFC72C;">TRENDING OFFERS</h2>
+                    <div class="offer-card" onclick="showOfferDetails('HAPPY HOUR')">
+                        <h2>Happy Hour Special</h2>
+                        <p>Buy 1 Get 1 on all Kingfisher Beers!</p>
+                        <p style="font-size: 0.875rem;">Valid from 4 PM to 7 PM, Monday to Thursday</p>
+                        <div class="claim">
+                            <span>Claim now</span>
+                            <span>→</span>
                         </div>
                     </div>
-                    <div id="step2" class="signup-step" style="display: none;">
-                        <h2 class="section-title" style="text-align: center;">Enter OTP</h2>
-                        <p style="text-align: center; margin-bottom: 16px;">We've sent a verification code to your phone</p>
-                        <div class="signup-form">
-                            <div class="form-group">
-                                <label for="otp">OTP</label>
-                                <input type="text" id="otp" pattern="[0-9]{4}" placeholder="4 digit OTP">
-                            </div>
-                            <button class="form-button" onclick="showSignupStep(3)">Verify OTP</button>
+                    <div class="offer-card" onclick="showOfferDetails('KF WEEKDAY SPECIAL')">
+                        <h2>KF Weekday Special</h2>
+                        <p>30% off on KF Premium & Ultra Max!</p>
+                        <p style="font-size: 0.875rem;">Valid Monday to Wednesday, all day</p>
+                        <div class="claim">
+                            <span>Claim now</span>
+                            <span>→</span>
                         </div>
                     </div>
-                    <div id="step3" class="signup-step" style="display: none;">
-                        <h2 class="section-title" style="text-align: center;">Complete Your Profile</h2>
-                        <div class="signup-form">
-                            <div class="form-group">
-                                <label for="name">Full Name</label>
-                                <input type="text" id="name">
+                </div>
+
+                <!-- Offer Details View -->
+                <div id="offer-details" style="display: none;">
+                    <div class="menu-section">
+                        <div style="text-align: center; padding: 20px;">
+                            <div style="font-size: 64px; margin-bottom: 16px;">🎉</div>
+                            <h2 style="color: #FFC72C; margin-bottom: 16px;" id="offer-title">Congratulations!</h2>
+                            <p style="color: white; margin-bottom: 20px;" id="offer-description">Your offer has been activated</p>
+                            
+                            <div style="background-color: #FFC72C; border: 2px dashed #C11B1F; border-radius: 8px; padding: 20px; margin: 20px 0; text-align: center;">
+                                <p style="color: #666; font-size: 0.875rem; margin-bottom: 8px;">Your Offer Code</p>
+                                <p style="color: #C11B1F; font-size: 2rem; font-weight: bold; margin-bottom: 8px;">KFPILOT</p>
+                                <p style="color: #666; font-size: 0.875rem;">Show this code to your server</p>
                             </div>
-                            <div class="form-group">
-                                <label for="age">Age</label>
-                                <input type="number" id="age" min="21">
-                                <p style="font-size: 0.75rem; color: #666; margin-top: 4px;">You must be at least 21 years old</p>
-                            </div>
-                            <div class="form-group">
-                                <label for="city">City</label>
-                                <input type="text" id="city">
-                            </div>
-                            <button class="form-button" onclick="showSignupStep(4)">Get My Offer</button>
-                        </div>
-                    </div>
-                    <div id="step4" class="signup-step" style="display: none;">
-                        <div class="success-message">
-                            <div class="check-icon">✓</div>
-                            <h2>Congratulations!</h2>
-                            <p>Your offer has been activated</p>
-                            <div class="offer-code">
-                                <p>Your offer code</p>
-                                <p id="offer-code">KF1234</p>
-                            </div>
-                            <p style="font-size: 0.875rem; color: #666; margin-bottom: 16px;">Show this code to your server to redeem your offer</p>
-                            <button class="form-button" onclick="showScreen('home')">Back to Home</button>
+                            
+                            <button class="form-button" onclick="applyOffer()" style="margin-bottom: 10px;">Apply Offer</button>
+                            <button class="form-button" onclick="backToOffers()" style="background-color: #666;">Back to Offers</button>
                         </div>
                     </div>
                 </div>
@@ -1561,7 +1407,6 @@
     </div>
 
     <script>
-        let currentOffer = '';
         let cart = [];
 
         // Cart functionality
@@ -1710,7 +1555,7 @@
             showScreen('home');
         }
         
-        function showScreen(screenId, offer) {
+        function showScreen(screenId) {
             // Hide all screens
             const screens = document.querySelectorAll('.screen');
             screens.forEach(screen => {
@@ -1723,31 +1568,42 @@
             } else if (screenId === 'cart') {
                 document.getElementById('cart-screen').classList.add('active');
                 displayCartItems();
-            } else if (screenId === 'signup') {
-                document.getElementById('signup-screen').classList.add('active');
-                currentOffer = offer;
-                document.getElementById('selected-offer').textContent = offer;
-                showSignupStep(1);
             } else {
                 document.getElementById(screenId + '-screen').classList.add('active');
             }
         }
-        
-        function showSignupStep(step) {
-            // Hide all steps
-            const steps = document.querySelectorAll('.signup-step');
-            steps.forEach(s => {
-                s.style.display = 'none';
-            });
+
+        function showOfferDetails(offerName) {
+            document.getElementById('offers-list').style.display = 'none';
+            document.getElementById('offer-details').style.display = 'block';
             
-            // Show the selected step
-            document.getElementById('step' + step).style.display = 'block';
+            // Update the offer title and description
+            const offerTitles = {
+                'HAPPY HOUR': 'Happy Hour Special Activated!',
+                'KF WEEKDAY SPECIAL': 'KF Weekday Special Activated!'
+            };
             
-            // For the last step, generate a random offer code
-            if (step === 4) {
-                const randomCode = 'KF' + Math.floor(1000 + Math.random() * 9000);
-                document.getElementById('offer-code').textContent = randomCode;
-            }
+            const offerDescriptions = {
+                'HAPPY HOUR': 'Buy 1 Get 1 on all Kingfisher Beers!',
+                'KF WEEKDAY SPECIAL': '30% off on KF Premium & Ultra Max!'
+            };
+            
+            document.getElementById('offer-title').textContent = offerTitles[offerName] || 'Offer Activated!';
+            document.getElementById('offer-description').textContent = offerDescriptions[offerName] || 'Your offer is ready to use!';
+        }
+
+        function applyOffer() {
+            alert('Offer applied successfully!\n\nYour KFPILOT code is now active.\nShow this to your waiter when placing your order.');
+            showScreen('home');
+        }
+
+        function backToOffers() {
+            document.getElementById('offers-list').style.display = 'block';
+            document.getElementById('offer-details').style.display = 'none';
+        }
+
+        function showOfferCode(offerName) {
+            alert(`Congratulations!\n\nYour offer: ${offerName}\nOffer Code: KF PILOT\n\nShow this code to your waiter to redeem your offer.`);
         }
     </script>
 </body>
