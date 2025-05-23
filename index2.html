@@ -1,0 +1,2175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amrut Restaurant QR Menu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #f8f9fa;
+            overflow: hidden;
+        }
+        .app-container {
+            max-width: 390px;
+            height: 100vh;
+            margin: 0 auto;
+            background-color: #C11B1F;
+            overflow: hidden;
+            position: relative;
+        }
+        .header {
+            background-color: #C11B1F;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+        .screen-content {
+            background-color: #C11B1F;
+            padding: 16px;
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        .logo-container {
+            width: 40%;
+            text-align: left;
+        }
+        .logo-container h1 {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .alert-box {
+            background-color: #FFC72C;
+            padding: 10px;
+            text-align: center;
+            margin: 0 16px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .content {
+            flex: 1;
+            padding: 0 16px 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .beer-banner {
+            background-color: white;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 24px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+            color: #C11B1F;
+            font-size: 20px;
+        }
+        .menu-title {
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+        .menu-item {
+            background-color: white;
+            border: 2px solid #FFC72C;
+            border-radius: 8px;
+            padding: 12px;
+            height: 144px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .menu-item.special {
+            background-color: #FFC72C;
+        }
+        .menu-item-icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+            color: #C11B1F;
+        }
+        .menu-item-text {
+            color: #C11B1F;
+            font-weight: 600;
+            text-align: center;
+        }
+        .footer {
+            background-color: #FFC72C;
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+        }
+        .screen {
+            display: none;
+            height: 100vh;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: #C11B1F;
+            overflow: hidden;
+        }
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+        }
+        .screen-header {
+            background-color: #C11B1F;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            color: white;
+            flex-shrink: 0;
+            min-height: 64px;
+        }
+        .back-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            margin-right: 16px;
+            cursor: pointer;
+        }
+        .menu-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            width: 100%;
+        }
+        .menu-section:last-child {
+            margin-bottom: 0;
+        }
+        .section-title {
+            color: #C11B1F;
+            font-weight: bold;
+            font-size: 1.125rem;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #FFC72C;
+        }
+        .menu-list {
+            list-style: none;
+            width: 100%;
+        }
+        .menu-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            width: 100%;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .menu-list-item:last-child {
+            border-bottom: none;
+        }
+        .menu-item-info {
+            flex: 1;
+            min-width: 0;
+            padding-right: 10px;
+        }
+        .menu-item-name {
+            font-weight: 500;
+            color: #333;
+            line-height: 1.3;
+            word-wrap: break-word;
+            font-size: 14px;
+        }
+        .menu-item-description {
+            font-size: 12px;
+            color: #666;
+            margin-top: 2px;
+            line-height: 1.2;
+        }
+        .price-controls-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+            min-width: 120px;
+        }
+        .item-price {
+            font-weight: 600;
+            color: #C11B1F;
+            font-size: 16px;
+            min-width: 60px;
+            text-align: right;
+        }
+        .item-controls {
+            min-width: 50px;
+            display: flex;
+            justify-content: center;
+        }
+        .cart-icon {
+            position: relative;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        #cart-count {
+            background-color: #FFC72C;
+            color: #C11B1F;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+            font-weight: bold;
+            min-width: 18px;
+            text-align: center;
+        }
+        .add-to-cart-btn {
+            background-color: #C11B1F;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+            min-width: 45px;
+            transition: background-color 0.2s;
+        }
+        .add-to-cart-btn:hover {
+            background-color: #a01519;
+        }
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 80px;
+            justify-content: center;
+        }
+        .quantity-btn {
+            background-color: #C11B1F;
+            color: white;
+            border: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+        .quantity-controls span {
+            min-width: 20px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .cart-item {
+            background-color: white;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .cart-item-details {
+            flex: 1;
+        }
+        .cart-item-name {
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .cart-item-price {
+            color: #666;
+            font-size: 14px;
+        }
+        .cart-total {
+            background-color: #FFC72C;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .cart-total h3 {
+            color: #C11B1F;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+        .order-btn {
+            background-color: #C11B1F;
+            color: white;
+            border: none;
+            padding: 16px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .empty-cart {
+            text-align: center;
+            padding: 40px 16px;
+            color: white;
+        }
+        .empty-cart-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+        .size-selector {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+            flex-wrap: wrap;
+        }
+        .size-btn {
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .size-btn.selected {
+            background-color: #C11B1F;
+            color: white;
+            border-color: #C11B1F;
+        }
+        .size-btn:hover {
+            background-color: #e0e0e0;
+        }
+        .size-btn.selected:hover {
+            background-color: #a01519;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Home Screen -->
+        <div id="home-screen" class="screen active">
+            <div class="header">
+                <div class="logo-container">
+                    <h1>AMRUT RESTAURANT</h1>
+                </div>
+                <div class="cart-icon" onclick="showScreen('cart')">
+                    🛒 <span id="cart-count">0</span>
+                </div>
+            </div>
+            <div class="content">
+                <div class="alert-box">
+                    DELICIOUS FOOD AWAITS!
+                </div>
+                <div class="beer-banner" onclick="showScreen('scotch')">
+                    PREMIUM DINING EXPERIENCE
+                </div>
+                <h2 class="menu-title">EXPLORE OUR DIGITAL MENU!</h2>
+                <div class="menu-grid">
+                    <div class="menu-item" onclick="showScreen('scotch')">
+                        <div class="menu-item-icon">🥃</div>
+                        <div class="menu-item-text">Scotch & Premium Whisky</div>
+                    </div>
+                    <div class="menu-item" onclick="showScreen('whisky')">
+                        <div class="menu-item-icon">🍾</div>
+                        <div class="menu-item-text">Indian Whisky</div>
+                    </div>
+                    <div class="menu-item" onclick="showScreen('vodka')">
+                        <div class="menu-item-icon">🍸</div>
+                        <div class="menu-item-text">Vodka & Spirits</div>
+                    </div>
+                    <div class="menu-item" onclick="showScreen('beer')">
+                        <div class="menu-item-icon">🍺</div>
+                        <div class="menu-item-text">Beer & Beverages</div>
+                    </div>
+                    <div class="menu-item" onclick="showScreen('food')">
+                        <div class="menu-item-icon">🍽️</div>
+                        <div class="menu-item-text">Food Menu</div>
+                    </div>
+                    <div class="menu-item special" onclick="showScreen('snacks')">
+                        <div class="menu-item-icon">🍿</div>
+                        <div class="menu-item-text">Snacks & Appetizers</div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                Powered by Amrut Restaurant
+            </div>
+        </div>
+
+        <!-- Scotch Screen -->
+        <div id="scotch-screen" class="screen">
+            <div class="screen-header">
+                <button class="back-button" onclick="showScreen('home')">←</button>
+                <h1>Scotch & Premium Whisky</h1>
+                <div class="cart-icon" onclick="showScreen('cart')" style="margin-left: auto;">
+                    🛒 <span id="cart-count">0</span>
+                </div>
+            </div>
+            <div class="screen-content">
+                <div class="menu-section">
+                    <h2 class="section-title">PREMIUM SCOTCH</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Bagpiper</div>
+                                <div class="menu-item-description">Blended with Scotch & Indian Malts</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="60">30ml - ₹60</span>
+                                    <span class="size-btn" data-size="60ml" data-price="105">60ml - ₹105</span>
+                                    <span class="size-btn" data-size="90ml" data-price="145">90ml - ₹145</span>
+                                    <span class="size-btn" data-size="180ml" data-price="255">180ml - ₹255</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹60</div>
+                                <div class="item-controls" data-name="Bagpiper" data-price="60" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Haywards</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="55">30ml - ₹55</span>
+                                    <span class="size-btn" data-size="60ml" data-price="105">60ml - ₹105</span>
+                                    <span class="size-btn" data-size="90ml" data-price="140">90ml - ₹140</span>
+                                    <span class="size-btn" data-size="180ml" data-price="245">180ml - ₹245</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹55</div>
+                                <div class="item-controls" data-name="Haywards" data-price="55" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vodka & Spirits Screen -->
+        <div id="vodka-screen" class="screen">
+            <div class="screen-header">
+                <button class="back-button" onclick="showScreen('home')">←</button>
+                <h1>Vodka & Spirits</h1>
+                <div class="cart-icon" onclick="showScreen('cart')" style="margin-left: auto;">
+                    🛒 <span id="cart-count">0</span>
+                </div>
+            </div>
+            <div class="screen-content">
+                <div class="menu-section">
+                    <h2 class="section-title">PREMIUM VODKA</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Smirnoff</div>
+                                <div class="menu-item-description">World's No.1 Vodka. Best Enjoyed with Cola or Soda</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="130">30ml - ₹130</span>
+                                    <span class="size-btn" data-size="60ml" data-price="250">60ml - ₹250</span>
+                                    <span class="size-btn" data-size="90ml" data-price="360">90ml - ₹360</span>
+                                    <span class="size-btn" data-size="180ml" data-price="685">180ml - ₹685</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹130</div>
+                                <div class="item-controls" data-name="Smirnoff" data-price="130" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Smirnoff Green Apple</div>
+                                <div class="menu-item-description">Green Apple Flavoured Smirnoff. Best Enjoyed with Lemonade</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="135">30ml - ₹135</span>
+                                    <span class="size-btn" data-size="60ml" data-price="260">60ml - ₹260</span>
+                                    <span class="size-btn" data-size="90ml" data-price="370">90ml - ₹370</span>
+                                    <span class="size-btn" data-size="180ml" data-price="710">180ml - ₹710</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹135</div>
+                                <div class="item-controls" data-name="Smirnoff Green Apple" data-price="135" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">REGULAR VODKA</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">White Mischief</div>
+                                <div class="menu-item-description">Ultra Pure Vodka</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="70">30ml - ₹70</span>
+                                    <span class="size-btn" data-size="60ml" data-price="135">60ml - ₹135</span>
+                                    <span class="size-btn" data-size="90ml" data-price="185">90ml - ₹185</span>
+                                    <span class="size-btn" data-size="180ml" data-price="335">180ml - ₹335</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹70</div>
+                                <div class="item-controls" data-name="White Mischief" data-price="70" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Romanov</div>
+                                <div class="menu-item-description">Triple Distilled Vodka</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="70">30ml - ₹70</span>
+                                    <span class="size-btn" data-size="60ml" data-price="125">60ml - ₹125</span>
+                                    <span class="size-btn" data-size="90ml" data-price="175">90ml - ₹175</span>
+                                    <span class="size-btn" data-size="180ml" data-price="315">180ml - ₹315</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹70</div>
+                                <div class="item-controls" data-name="Romanov" data-price="70" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Romanov Green Apple</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="70">30ml - ₹70</span>
+                                    <span class="size-btn" data-size="60ml" data-price="125">60ml - ₹125</span>
+                                    <span class="size-btn" data-size="90ml" data-price="175">90ml - ₹175</span>
+                                    <span class="size-btn" data-size="180ml" data-price="315">180ml - ₹315</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹70</div>
+                                <div class="item-controls" data-name="Romanov Green Apple" data-price="70" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">RUM</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">McDowell's No.1 Celebration</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="65">30ml - ₹65</span>
+                                    <span class="size-btn" data-size="60ml" data-price="120">60ml - ₹120</span>
+                                    <span class="size-btn" data-size="90ml" data-price="160">90ml - ₹160</span>
+                                    <span class="size-btn" data-size="180ml" data-price="290">180ml - ₹290</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹65</div>
+                                <div class="item-controls" data-name="McDowell's No.1 Celebration" data-price="65" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Bacardi</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="130">30ml - ₹130</span>
+                                    <span class="size-btn" data-size="60ml" data-price="245">60ml - ₹245</span>
+                                    <span class="size-btn" data-size="90ml" data-price="350">90ml - ₹350</span>
+                                    <span class="size-btn" data-size="180ml" data-price="670">180ml - ₹670</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹130</div>
+                                <div class="item-controls" data-name="Bacardi" data-price="130" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Old Monk</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="65">30ml - ₹65</span>
+                                    <span class="size-btn" data-size="60ml" data-price="120">60ml - ₹120</span>
+                                    <span class="size-btn" data-size="90ml" data-price="160">90ml - ₹160</span>
+                                    <span class="size-btn" data-size="180ml" data-price="290">180ml - ₹290</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹65</div>
+                                <div class="item-controls" data-name="Old Monk" data-price="65" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">BRANDY</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Dr. Brandy</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="55">30ml - ₹55</span>
+                                    <span class="size-btn" data-size="60ml" data-price="100">60ml - ₹100</span>
+                                    <span class="size-btn" data-size="90ml" data-price="135">90ml - ₹135</span>
+                                    <span class="size-btn" data-size="180ml" data-price="235">180ml - ₹235</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹55</div>
+                                <div class="item-controls" data-name="Dr. Brandy" data-price="55" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Beer & Beverages Screen -->
+        <div id="beer-screen" class="screen">
+            <div class="screen-header">
+                <button class="back-button" onclick="showScreen('home')">←</button>
+                <h1>Beer & Beverages</h1>
+                <div class="cart-icon" onclick="showScreen('cart')" style="margin-left: auto;">
+                    🛒 <span id="cart-count">0</span>
+                </div>
+            </div>
+            <div class="screen-content">
+                <div class="menu-section">
+                    <h2 class="section-title">STRONG BEER</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Kingfisher</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹345</div>
+                                <div class="item-controls" data-name="Kingfisher Strong" data-price="345">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Kingfisher (330 ml)</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹235</div>
+                                <div class="item-controls" data-name="Kingfisher (330 ml) Strong" data-price="235">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Tuborg</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹355</div>
+                                <div class="item-controls" data-name="Tuborg Strong" data-price="355">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Carlsberg</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹430</div>
+                                <div class="item-controls" data-name="Carlsberg Strong" data-price="430">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Budweiser Magnum</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹460</div>
+                                <div class="item-controls" data-name="Budweiser Magnum" data-price="460">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Tuborg Can (500ML)</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹310</div>
+                                <div class="item-controls" data-name="Tuborg Can (500ML)" data-price="310">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">MILD BEER</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Kingfisher</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹360</div>
+                                <div class="item-controls" data-name="Kingfisher Mild" data-price="360">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Kingfisher Ultra</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹380</div>
+                                <div class="item-controls" data-name="Kingfisher Ultra" data-price="380">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Heineken</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹390</div>
+                                <div class="item-controls" data-name="Heineken" data-price="390">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Budweiser</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹445</div>
+                                <div class="item-controls" data-name="Budweiser" data-price="445">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">COLD DRINKS</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Cold Drinks</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹40</div>
+                                <div class="item-controls" data-name="Cold Drinks" data-price="40">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Cold 500 ml</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹70</div>
+                                <div class="item-controls" data-name="Cold 500 ml" data-price="70">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Soda</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹25</div>
+                                <div class="item-controls" data-name="Soda" data-price="25">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Bisleri</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹30</div>
+                                <div class="item-controls" data-name="Bisleri" data-price="30">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Red Bull</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹185</div>
+                                <div class="item-controls" data-name="Red Bull" data-price="185">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Bacardi Breezer</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹185</div>
+                                <div class="item-controls" data-name="Bacardi Breezer" data-price="185">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Food Menu Screen -->
+        <div id="food-screen" class="screen">
+            <div class="screen-header">
+                <button class="back-button" onclick="showScreen('home')">←</button>
+                <h1>Food Menu</h1>
+                <div class="cart-icon" onclick="showScreen('cart')" style="margin-left: auto;">
+                    🛒 <span id="cart-count">0</span>
+                </div>
+            </div>
+            <div class="screen-content">
+                <div class="menu-section">
+                    <h2 class="section-title">SANDWICH</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Bread Butter</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹50</div>
+                                <div class="item-controls" data-name="Bread Butter" data-price="50">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Veg Sandwich</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹130</div>
+                                <div class="item-controls" data-name="Veg Sandwich" data-price="130">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Veg Cheese Sandwich</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹160</div>
+                                <div class="item-controls" data-name="Veg Cheese Sandwich" data-price="160">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Chicken Sandwich</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹180</div>
+                                <div class="item-controls" data-name="Chicken Sandwich" data-price="180">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Egg Omlet</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹110</div>
+                                <div class="item-controls" data-name="Egg Omlet" data-price="110">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Cheese Garlic Toast</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹170</div>
+                                <div class="item-controls" data-name="Cheese Garlic Toast" data-price="170">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">SOUPS</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Veg Clear Soup</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹130</div>
+                                <div class="item-controls" data-name="Veg Clear Soup" data-price="130">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Tomato Soup</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹150</div>
+                                <div class="item-controls" data-name="Tomato Soup" data-price="150">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Mushroom Soup</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹165</div>
+                                <div class="item-controls" data-name="Mushroom Soup" data-price="165">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Chicken Sweet Corn Soup</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹185</div>
+                                <div class="item-controls" data-name="Chicken Sweet Corn Soup" data-price="185">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Chicken Manchow Soup</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹185</div>
+                                <div class="item-controls" data-name="Chicken Manchow Soup" data-price="185">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">INDIAN DISHES (VEG)</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Amrut Spl Veg</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹370</div>
+                                <div class="item-controls" data-name="Amrut Spl Veg" data-price="370">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Paneer Butter Masala</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹250</div>
+                                <div class="item-controls" data-name="Paneer Butter Masala" data-price="250">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Paneer Tikka Masala</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹320</div>
+                                <div class="item-controls" data-name="Paneer Tikka Masala" data-price="320">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Dal Makhani</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹230</div>
+                                <div class="item-controls" data-name="Dal Makhani" data-price="230">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Malai Kofta</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹270</div>
+                                <div class="item-controls" data-name="Malai Kofta" data-price="270">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Mix Veg</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹220</div>
+                                <div class="item-controls" data-name="Mix Veg" data-price="220">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">INDIAN DISHES (NON-VEG)</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Amrut Spl Chicken</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹430</div>
+                                <div class="item-controls" data-name="Amrut Spl Chicken" data-price="430">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Butter Chicken (F)</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹410</div>
+                                <div class="item-controls" data-name="Butter Chicken (F)" data-price="410">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Butter Chicken (H)</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹240</div>
+                                <div class="item-controls" data-name="Butter Chicken (H)" data-price="240">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Chicken Tikka Masala</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹340</div>
+                                <div class="item-controls" data-name="Chicken Tikka Masala" data-price="340">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Chicken Handi</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹320</div>
+                                <div class="item-controls" data-name="Chicken Handi" data-price="320">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Mutton Masala</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹275</div>
+                                <div class="item-controls" data-name="Mutton Masala" data-price="275">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">BIRYANI & RICE</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Veg Biryani</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹250</div>
+                                <div class="item-controls" data-name="Veg Biryani" data-price="250">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Chicken Biryani</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹280</div>
+                                <div class="item-controls" data-name="Chicken Biryani" data-price="280">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Chicken Hyderabadi Biryani</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹310</div>
+                                <div class="item-controls" data-name="Chicken Hyderabadi Biryani" data-price="310">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Mutton Biryani</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹320</div>
+                                <div class="item-controls" data-name="Mutton Biryani" data-price="320">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Plain Rice (F)</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹75</div>
+                                <div class="item-controls" data-name="Plain Rice (F)" data-price="75">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Plain Rice (H)</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹50</div>
+                                <div class="item-controls" data-name="Plain Rice (H)" data-price="50">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">TANDOORI DISHES</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Chicken Tandoori (F)</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹390</div>
+                                <div class="item-controls" data-name="Chicken Tandoori (F)" data-price="390">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Chicken Tandoori (H)</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹220</div>
+                                <div class="item-controls" data-name="Chicken Tandoori (H)" data-price="220">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Chicken Tikka (F)</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹290</div>
+                                <div class="item-controls" data-name="Chicken Tikka (F)" data-price="290">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Chicken Malai Kabab</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹310</div>
+                                <div class="item-controls" data-name="Chicken Malai Kabab" data-price="310">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Paneer Tikka</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹290</div>
+                                <div class="item-controls" data-name="Paneer Tikka" data-price="290">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">ROTI & BREAD</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Roti</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹35</div>
+                                <div class="item-controls" data-name="Roti" data-price="35">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Butter Roti</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹45</div>
+                                <div class="item-controls" data-name="Butter Roti" data-price="45">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Naan</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹60</div>
+                                <div class="item-controls" data-name="Naan" data-price="60">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Butter Naan</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹70</div>
+                                <div class="item-controls" data-name="Butter Naan" data-price="70">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Garlic Naan</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹90</div>
+                                <div class="item-controls" data-name="Garlic Naan" data-price="90">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Cheese Naan</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹120</div>
+                                <div class="item-controls" data-name="Cheese Naan" data-price="120">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Snacks Screen -->
+        <div id="snacks-screen" class="screen">
+            <div class="screen-header">
+                <button class="back-button" onclick="showScreen('home')">←</button>
+                <h1>Snacks & Appetizers</h1>
+                <div class="cart-icon" onclick="showScreen('cart')" style="margin-left: auto;">
+                    🛒 <span id="cart-count">0</span>
+                </div>
+            </div>
+            <div class="screen-content">
+                <div class="menu-section">
+                    <h2 class="section-title">VEG SNACKS</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Veg Lollypop</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹250</div>
+                                <div class="item-controls" data-name="Veg Lollypop" data-price="250">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Veg Manchurian</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹240</div>
+                                <div class="item-controls" data-name="Veg Manchurian" data-price="240">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Paneer 65</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹280</div>
+                                <div class="item-controls" data-name="Paneer 65" data-price="280">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Paneer Chilly</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹270</div>
+                                <div class="item-controls" data-name="Paneer Chilly" data-price="270">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Mushroom Chilly</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹270</div>
+                                <div class="item-controls" data-name="Mushroom Chilly" data-price="270">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Finger Chips</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹170</div>
+                                <div class="item-controls" data-name="Finger Chips" data-price="170">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Masala Papad</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹80</div>
+                                <div class="item-controls" data-name="Masala Papad" data-price="80">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">NON-VEG SNACKS</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Chicken Lollypop</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹320</div>
+                                <div class="item-controls" data-name="Chicken Lollypop" data-price="320">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Chicken 65 Indian B/L</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹280</div>
+                                <div class="item-controls" data-name="Chicken 65 Indian B/L" data-price="280">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Chicken Chilly</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹260</div>
+                                <div class="item-controls" data-name="Chicken Chilly" data-price="260">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Chicken Manchurian</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹320</div>
+                                <div class="item-controls" data-name="Chicken Manchurian" data-price="320">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Chicken Koliwada</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹275</div>
+                                <div class="item-controls" data-name="Chicken Koliwada" data-price="275">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Mutton Chilly (With Bone)</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹275</div>
+                                <div class="item-controls" data-name="Mutton Chilly (With Bone)" data-price="275">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Egg Chilly</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹250</div>
+                                <div class="item-controls" data-name="Egg Chilly" data-price="250">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">FISH DISHES</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Pomfret Masala</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹345</div>
+                                <div class="item-controls" data-name="Pomfret Masala" data-price="345">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Fish Finger</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹360</div>
+                                <div class="item-controls" data-name="Fish Finger" data-price="360">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Prawns Koliwada</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹290</div>
+                                <div class="item-controls" data-name="Prawns Koliwada" data-price="290">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Prawns Chilly</div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹310</div>
+                                <div class="item-controls" data-name="Prawns Chilly" data-price="310">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cart Screen -->
+        <div id="cart-screen" class="screen">
+            <div class="screen-header">
+                <button class="back-button" onclick="showScreen('home')">←</button>
+                <h1>Your Cart</h1>
+            </div>
+            <div class="screen-content">
+                <div id="cart-items-container">
+                    <!-- Cart items will be populated here -->
+                </div>
+                <div id="empty-cart" class="empty-cart">
+                    <div class="empty-cart-icon">🛒</div>
+                    <h3>Your cart is empty</h3>
+                    <p>Add some delicious items to get started!</p>
+                </div>
+                <div id="cart-summary" style="display: none;">
+                    <div class="cart-total">
+                        <h3>Total: ₹<span id="cart-total-amount">0</span></h3>
+                        <p style="color: #666; font-size: 14px;">Inclusive of all taxes</p>
+                    </div>
+                    <button class="order-btn" onclick="placeOrder()">Place Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+
+        // Size selector functionality
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('size-btn')) {
+                const sizeSelector = e.target.parentElement;
+                const menuItem = sizeSelector.closest('.menu-list-item');
+                const priceElement = menuItem.querySelector('.item-price');
+                const itemControls = menuItem.querySelector('.item-controls');
+                
+                // Remove selected class from all size buttons in this item
+                sizeSelector.querySelectorAll('.size-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                
+                // Add selected class to clicked button
+                e.target.classList.add('selected');
+                
+                // Update price and item controls data
+                const newPrice = e.target.dataset.price;
+                const newSize = e.target.dataset.size;
+                const itemName = itemControls.dataset.name;
+                
+                priceElement.textContent = '₹' + newPrice;
+                itemControls.dataset.price = newPrice;
+                itemControls.dataset.size = newSize;
+                
+                // Update cart item name to include size
+                const baseName = itemName.split(' (')[0]; // Remove existing size info
+                itemControls.dataset.name = baseName + ' (' + newSize + ')';
+                
+                // Reset the add button if this item was in cart
+                const existingCartItem = cart.find(item => item.name.startsWith(baseName));
+                if (!existingCartItem) {
+                    itemControls.innerHTML = '<button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>';
+                }
+            }
+        });
+
+        // Cart functionality
+        function addToCart(button) {
+            const itemData = button.parentElement;
+            const name = itemData.dataset.name;
+            const price = parseInt(itemData.dataset.price);
+            
+            const existingItem = cart.find(item => item.name === name);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    name: name,
+                    price: price,
+                    quantity: 1
+                });
+            }
+            
+            updateCartUI(button);
+            updateCartCount();
+        }
+
+        function updateCartUI(button) {
+            const itemData = button.parentElement;
+            const name = itemData.dataset.name;
+            const item = cart.find(item => item.name === name);
+            
+            if (item && item.quantity > 0) {
+                itemData.innerHTML = `
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="decreaseQuantity('${name}')">-</button>
+                        <span>${item.quantity}</span>
+                        <button class="quantity-btn" onclick="increaseQuantity('${name}')">+</button>
+                    </div>
+                `;
+            }
+        }
+
+        function increaseQuantity(itemName) {
+            const item = cart.find(item => item.name === itemName);
+            if (item) {
+                item.quantity += 1;
+                updateAllItemControls();
+                updateCartCount();
+            }
+        }
+
+        function decreaseQuantity(itemName) {
+            const item = cart.find(item => item.name === itemName);
+            if (item) {
+                item.quantity -= 1;
+                if (item.quantity <= 0) {
+                    cart = cart.filter(cartItem => cartItem.name !== itemName);
+                }
+                updateAllItemControls();
+                updateCartCount();
+            }
+        }
+
+        function updateAllItemControls() {
+            const allControls = document.querySelectorAll('.item-controls');
+            allControls.forEach(control => {
+                const name = control.dataset.name;
+                const item = cart.find(item => item.name === name);
+                
+                if (item && item.quantity > 0) {
+                    control.innerHTML = `
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" onclick="decreaseQuantity('${name}')">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="quantity-btn" onclick="increaseQuantity('${name}')">+</button>
+                        </div>
+                    `;
+                } else {
+                    control.innerHTML = `<button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>`;
+                }
+            });
+        }
+
+        function updateCartCount() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartCountElements = document.querySelectorAll('#cart-count');
+            cartCountElements.forEach(element => {
+                element.textContent = totalItems;
+            });
+            
+            if (document.getElementById('cart-screen').classList.contains('active')) {
+                displayCartItems();
+            }
+        }
+
+        function displayCartItems() {
+            const container = document.getElementById('cart-items-container');
+            const emptyCart = document.getElementById('empty-cart');
+            const cartSummary = document.getElementById('cart-summary');
+            
+            if (cart.length === 0) {
+                container.innerHTML = '';
+                emptyCart.style.display = 'block';
+                cartSummary.style.display = 'none';
+                return;
+            }
+            
+            emptyCart.style.display = 'none';
+            cartSummary.style.display = 'block';
+            
+            let cartHTML = '';
+            let total = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                cartHTML += `
+                    <div class="cart-item">
+                        <div class="cart-item-details">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-price">₹${item.price} each</div>
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" onclick="decreaseQuantity('${item.name}')">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="quantity-btn" onclick="increaseQuantity('${item.name}')">+</button>
+                        </div>
+                        <div style="margin-left: 10px; font-weight: bold;">
+                            ₹${itemTotal}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = cartHTML;
+            document.getElementById('cart-total-amount').textContent = total;
+        }
+
+        function placeOrder() {
+            if (cart.length === 0) return;
+            
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            alert(`Order placed successfully!\n\nTotal: ₹${total}\n\nYour order will be prepared shortly. Thank you!`);
+            
+            cart = [];
+            updateCartCount();
+            showScreen('home');
+        }
+        
+        function showScreen(screenId) {
+            // Hide all screens
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Show the selected screen
+            if (screenId === 'home') {
+                document.getElementById('home-screen').classList.add('active');
+            } else if (screenId === 'cart') {
+                document.getElementById('cart-screen').classList.add('active');
+                displayCartItems();
+            } else {
+                document.getElementById(screenId + '-screen').classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
+                
+                                <div class="menu-item-name">Black Dog Triple Gold Reserve</div>
+                                <div class="menu-item-description">Triple Matured in Oak & Sherry Casks; Guaranteed Luxury in Every Bottle</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="230">30ml - ₹230</span>
+                                    <span class="size-btn" data-size="60ml" data-price="455">60ml - ₹455</span>
+                                    <span class="size-btn" data-size="90ml" data-price="665">90ml - ₹665</span>
+                                    <span class="size-btn" data-size="180ml" data-price="1295">180ml - ₹1295</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹230</div>
+                                <div class="item-controls" data-name="Black Dog Triple Gold Reserve" data-price="230" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Black Dog Black Reserve</div>
+                                <div class="menu-item-description">Superior Scotch Whisky Blended with Malts from Vandus Region of Scotland</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="195">30ml - ₹195</span>
+                                    <span class="size-btn" data-size="60ml" data-price="380">60ml - ₹380</span>
+                                    <span class="size-btn" data-size="90ml" data-price="550">90ml - ₹550</span>
+                                    <span class="size-btn" data-size="180ml" data-price="1070">180ml - ₹1070</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹195</div>
+                                <div class="item-controls" data-name="Black Dog Black Reserve" data-price="195" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Black & White</div>
+                                <div class="menu-item-description">Exceptionally Smooth, Perfect for Sharing</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="200">30ml - ₹200</span>
+                                    <span class="size-btn" data-size="60ml" data-price="390">60ml - ₹390</span>
+                                    <span class="size-btn" data-size="90ml" data-price="570">90ml - ₹570</span>
+                                    <span class="size-btn" data-size="180ml" data-price="1110">180ml - ₹1110</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹200</div>
+                                <div class="item-controls" data-name="Black & White" data-price="200" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Vat 69</div>
+                                <div class="menu-item-description">Experience This Accessible & Rugged Blended Scotch Whisky</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="190">30ml - ₹190</span>
+                                    <span class="size-btn" data-size="60ml" data-price="365">60ml - ₹365</span>
+                                    <span class="size-btn" data-size="90ml" data-price="530">90ml - ₹530</span>
+                                    <span class="size-btn" data-size="180ml" data-price="1030">180ml - ₹1030</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹190</div>
+                                <div class="item-controls" data-name="Vat 69" data-price="190" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Teachers</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="210">30ml - ₹210</span>
+                                    <span class="size-btn" data-size="60ml" data-price="405">60ml - ₹405</span>
+                                    <span class="size-btn" data-size="90ml" data-price="590">90ml - ₹590</span>
+                                    <span class="size-btn" data-size="180ml" data-price="1150">180ml - ₹1150</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹210</div>
+                                <div class="item-controls" data-name="Teachers" data-price="210" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Indian Whisky Screen -->
+        <div id="whisky-screen" class="screen">
+            <div class="screen-header">
+                <button class="back-button" onclick="showScreen('home')">←</button>
+                <h1>Indian Whisky</h1>
+                <div class="cart-icon" onclick="showScreen('cart')" style="margin-left: auto;">
+                    🛒 <span id="cart-count">0</span>
+                </div>
+            </div>
+            <div class="screen-content">
+                <div class="menu-section">
+                    <h2 class="section-title">PREMIUM WHISKY</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Antiquity Blue</div>
+                                <div class="menu-item-description">Whisky made in Timeless Traditions Blended with Scotch Distilled in Authentic Copper Pot Still</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="135">30ml - ₹135</span>
+                                    <span class="size-btn" data-size="60ml" data-price="260">60ml - ₹260</span>
+                                    <span class="size-btn" data-size="90ml" data-price="375">90ml - ₹375</span>
+                                    <span class="size-btn" data-size="180ml" data-price="720">180ml - ₹720</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹135</div>
+                                <div class="item-controls" data-name="Antiquity Blue" data-price="135" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Signature Premier Grain Whisky</div>
+                                <div class="menu-item-description">Only Indian Grain Whisky Blended with 8 Year Aged Scotch</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="125">30ml - ₹125</span>
+                                    <span class="size-btn" data-size="60ml" data-price="245">60ml - ₹245</span>
+                                    <span class="size-btn" data-size="90ml" data-price="350">90ml - ₹350</span>
+                                    <span class="size-btn" data-size="180ml" data-price="670">180ml - ₹670</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹125</div>
+                                <div class="item-controls" data-name="Signature Premier Grain Whisky" data-price="125" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Signature Rare Aged Whisky</div>
+                                <div class="menu-item-description">A Smooth Blend of Imported Scotch & 100% Aged Indian Malts</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="125">30ml - ₹125</span>
+                                    <span class="size-btn" data-size="60ml" data-price="245">60ml - ₹245</span>
+                                    <span class="size-btn" data-size="90ml" data-price="350">90ml - ₹350</span>
+                                    <span class="size-btn" data-size="180ml" data-price="670">180ml - ₹670</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹125</div>
+                                <div class="item-controls" data-name="Signature Rare Aged Whisky" data-price="125" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Blenders Reserve</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="125">30ml - ₹125</span>
+                                    <span class="size-btn" data-size="60ml" data-price="235">60ml - ₹235</span>
+                                    <span class="size-btn" data-size="90ml" data-price="335">90ml - ₹335</span>
+                                    <span class="size-btn" data-size="180ml" data-price="645">180ml - ₹645</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹125</div>
+                                <div class="item-controls" data-name="Blenders Reserve" data-price="125" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Oaksmith Gold</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="135">30ml - ₹135</span>
+                                    <span class="size-btn" data-size="60ml" data-price="255">60ml - ₹255</span>
+                                    <span class="size-btn" data-size="90ml" data-price="365">90ml - ₹365</span>
+                                    <span class="size-btn" data-size="180ml" data-price="700">180ml - ₹700</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹135</div>
+                                <div class="item-controls" data-name="Oaksmith Gold" data-price="135" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Oaksmith Silver</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="125">30ml - ₹125</span>
+                                    <span class="size-btn" data-size="60ml" data-price="235">60ml - ₹235</span>
+                                    <span class="size-btn" data-size="90ml" data-price="340">90ml - ₹340</span>
+                                    <span class="size-btn" data-size="180ml" data-price="645">180ml - ₹645</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹125</div>
+                                <div class="item-controls" data-name="Oaksmith Silver" data-price="125" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">PRESTIGE WHISKY</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">McDowell's No.1 Luxury</div>
+                                <div class="menu-item-description">A Rich Blend With Premium Imported Scotch & Handpicked Indian Grain Spirits</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="75">30ml - ₹75</span>
+                                    <span class="size-btn" data-size="60ml" data-price="140">60ml - ₹140</span>
+                                    <span class="size-btn" data-size="90ml" data-price="200">90ml - ₹200</span>
+                                    <span class="size-btn" data-size="180ml" data-price="365">180ml - ₹365</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹75</div>
+                                <div class="item-controls" data-name="McDowell's No.1 Luxury" data-price="75" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">McDowell's No.1 Original</div>
+                                <div class="menu-item-description">India's Favourite Whisky Blended With Scotch</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="80">30ml - ₹80</span>
+                                    <span class="size-btn" data-size="60ml" data-price="135">60ml - ₹135</span>
+                                    <span class="size-btn" data-size="90ml" data-price="185">90ml - ₹185</span>
+                                    <span class="size-btn" data-size="180ml" data-price="335">180ml - ₹335</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹80</div>
+                                <div class="item-controls" data-name="McDowell's No.1 Original" data-price="80" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Royal Stag Barrel Select</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="90">30ml - ₹90</span>
+                                    <span class="size-btn" data-size="60ml" data-price="170">60ml - ₹170</span>
+                                    <span class="size-btn" data-size="90ml" data-price="240">90ml - ₹240</span>
+                                    <span class="size-btn" data-size="180ml" data-price="445">180ml - ₹445</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹90</div>
+                                <div class="item-controls" data-name="Royal Stag Barrel Select" data-price="90" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Imperial Blue</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="70">30ml - ₹70</span>
+                                    <span class="size-btn" data-size="60ml" data-price="125">60ml - ₹125</span>
+                                    <span class="size-btn" data-size="90ml" data-price="175">90ml - ₹175</span>
+                                    <span class="size-btn" data-size="180ml" data-price="315">180ml - ₹315</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹70</div>
+                                <div class="item-controls" data-name="Imperial Blue" data-price="70" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Royal Challenge</div>
+                                <div class="menu-item-description">Perfectly Crafted Blend Matured in American Oak Casks</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="90">30ml - ₹90</span>
+                                    <span class="size-btn" data-size="60ml" data-price="165">60ml - ₹165</span>
+                                    <span class="size-btn" data-size="90ml" data-price="235">90ml - ₹235</span>
+                                    <span class="size-btn" data-size="180ml" data-price="435">180ml - ₹435</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹90</div>
+                                <div class="item-controls" data-name="Royal Challenge" data-price="90" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Royal Stag</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="75">30ml - ₹75</span>
+                                    <span class="size-btn" data-size="60ml" data-price="140">60ml - ₹140</span>
+                                    <span class="size-btn" data-size="90ml" data-price="200">90ml - ₹200</span>
+                                    <span class="size-btn" data-size="180ml" data-price="365">180ml - ₹365</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹75</div>
+                                <div class="item-controls" data-name="Royal Stag" data-price="75" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <h2 class="section-title">POPULAR WHISKY</h2>
+                    <ul class="menu-list">
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">DSP Black</div>
+                                <div class="menu-item-description">Blended with the Finest Malts for a Distinctive Flavor</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="65">30ml - ₹65</span>
+                                    <span class="size-btn" data-size="60ml" data-price="115">60ml - ₹115</span>
+                                    <span class="size-btn" data-size="90ml" data-price="160">90ml - ₹160</span>
+                                    <span class="size-btn" data-size="180ml" data-price="285">180ml - ₹285</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹65</div>
+                                <div class="item-controls" data-name="DSP Black" data-price="65" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
+                                <div class="menu-item-name">Directors Special</div>
+                                <div class="menu-item-description">Always Smooth Always Special</div>
+                                <div class="size-selector">
+                                    <span class="size-btn selected" data-size="30ml" data-price="60">30ml - ₹60</span>
+                                    <span class="size-btn" data-size="60ml" data-price="115">60ml - ₹115</span>
+                                    <span class="size-btn" data-size="90ml" data-price="155">90ml - ₹155</span>
+                                    <span class="size-btn" data-size="180ml" data-price="275">180ml - ₹275</span>
+                                </div>
+                            </div>
+                            <div class="price-controls-container">
+                                <div class="item-price">₹60</div>
+                                <div class="item-controls" data-name="Directors Special" data-price="60" data-size="30ml">
+                                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="menu-list-item">
+                            <div class="menu-item-info">
